@@ -1,0 +1,13 @@
+# ref: https://github.com/helm/chart-testing/blob/master/doc/ct_lint-and-install.md
+remote: origin
+target-branch: main
+chart-dirs:
+  - charts
+chart-repos:
+  - myrepo=oci://ghcr.io/tuananh/chart-repo-template
+helm-extra-args: "--timeout 600s"  
+validate-chart-schema: false
+validate-maintainers: true
+validate-yaml: true
+exclude-deprecated: true
+excluded-charts: []

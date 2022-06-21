@@ -1,0 +1,82 @@
+## Reference: https://github.com/helm/chart-testing-action
+---
+name: Linting and Testing
+on:
+  push:
+
+jobs: 
+  chart-test:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+        with:
+          fetch-depth: 0
+
+      - name: Set up Helm
+        uses: azure/setup-helm@v2.1
+
+      - name: Set up python
+        uses: actions/setup-python@v4
+        with:
+          python-version: 3.8
+
+      - name: Setup Chart Linting
+        id: lint
+        uses: helm/chart-testing-action@v2.2.1
+
+      - name: List changed charts
+        id: list-changed
+        run: |
+          ## If executed with debug this won't work anymore.
+          changed=$(ct --config ./.github/configs/ct-lint.yaml list-changed)
+          charts=$(echo "$changed" | tr '\n' ' ' | xargs)
+          if [[ -n "$changed" ]]; then
+            echo "::set-output name=changed::true"
+            echo "::set-output name=changed_charts::$charts"
+          fi
+      
+      # TODO: (tuananh) since chart-testing doesn't support OCI registry yet
+      # we will build and use this PR in the meantime
+      # ref: https://github.com/helm/chart-testing/pull/445
+
+      - uses: actions/setup-go@v3
+        with:
+          go-version: '>=1.17.0'
+      - name: install custom chart-testing (ct CLI)
+        run: |
+          git clone -b ft-add-registry-support https://github.com/jcsf/chart-testing.git
+          cd chart-testing
+          go build -o /usr/local/bin/ct ct/main.go
+      
+      - name: Run chart-testing (lint)
+        run: |
+          /usr/local/bin/ct lint --debug \
+            --config ./.github/configs/ct-lint.yaml \
+            --lint-conf ./.github/configs/lintconf.yaml \
+            --helm-repo-extra-args myrepo="--username ${{ github.actor }} --password ${{ secrets.GITHUB_TOKEN }}"
+      
+      - name: Run docs-testing (helm-docs)
+        id: helm-docs
+        run: |
+          ./hack/gen-docs.sh
+          if [[ $(git diff --stat) != '' ]]; then
+            echo -e '\033[0;31mDocumentation outdated!\033[0m ❌'
+            git diff --color
+            exit 1
+          else
+            echo -e '\033[0;32mDocumentation up to date\033[0m ✔'
+          fi
+
+      # Skip testing for now since it doesn't support pulling chart from OCI registry yet.
+      # TODO: (tuananh): wait til the PR lands and we can re-enable it.
+
+      - name: Create kind cluster
+        uses: helm/kind-action@v1.3.0
+        if: steps.list-changed.outputs.changed == 'true'
+        with:
+          config: .github/configs/kind-config.yaml
+
+      - name: Run chart-testing (install)
+        run: /usr/local/bin/ct install --config ./.github/configs/ct-install.yaml
+        if: steps.list-changed.outputs.changed == 'true'
