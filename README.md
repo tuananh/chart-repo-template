@@ -10,7 +10,7 @@ A chart repo template
 
 ```shell
 # login to registry and then
-helm pull oci://ghcr.io/tuananh/chart-repo-template/example-chart --version 1.0.8
+helm pull oci://ghcr.io/tuananh/chart-repo-template/example-chart --version 0.1.0
 ```
 
 ## License
