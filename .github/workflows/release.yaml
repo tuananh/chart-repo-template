@@ -11,6 +11,8 @@ permissions:
 
 jobs:
   release:
+    permissions:
+      contents: write
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
@@ -52,3 +54,8 @@ jobs:
             fi
             helm push "${pkg}" oci://ghcr.io/tuananh/chart-repo-template
           done
+          
+      - name: Run chart-releaser
+        uses: helm/chart-releaser-action@v1.4.0
+        env:
+          CR_TOKEN: "${{ secrets.GITHUB_TOKEN }}"
