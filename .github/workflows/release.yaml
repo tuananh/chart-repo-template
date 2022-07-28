@@ -54,7 +54,7 @@ jobs:
           done
       
       # publish charts to gh-pages branch
-      - name: Run chart-releaser
+      - name: Push charts to GitHub Pages
         uses: helm/chart-releaser-action@v1.4.0
         env:
           CR_TOKEN: "${{ secrets.GITHUB_TOKEN }}"
