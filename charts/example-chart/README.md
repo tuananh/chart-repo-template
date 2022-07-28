@@ -1,6 +1,6 @@
 # example-chart
 
-![Version: 0.1.0](https://img.shields.io/badge/Version-0.1.0-informational?style=flat-square)  ![AppVersion: 1.16.0](https://img.shields.io/badge/AppVersion-1.16.0-informational?style=flat-square)
+![Version: 0.1.1](https://img.shields.io/badge/Version-0.1.1-informational?style=flat-square)  ![AppVersion: 1.16.0](https://img.shields.io/badge/AppVersion-1.16.0-informational?style=flat-square)
 
 ## Description
 
@@ -23,9 +23,7 @@ A Helm chart for Kubernetes
 | ingress.annotations | object | `{}` |  |
 | ingress.className | string | `""` |  |
 | ingress.enabled | bool | `false` |  |
-| ingress.hosts[0].host | string | `"chart-example.local"` |  |
-| ingress.hosts[0].paths[0].path | string | `"/"` |  |
-| ingress.hosts[0].paths[0].pathType | string | `"ImplementationSpecific"` |  |
+| ingress.hosts | list | `[{"host":"chart-example.local","paths":[{"path":"/","pathType":"ImplementationSpecific"}]}]` |  kubernetes.io/tls-acme: "true" |
 | ingress.tls | list | `[]` |  |
 | nameOverride | string | `""` |  |
 | nodeSelector | object | `{}` |  |
@@ -38,5 +36,5 @@ A Helm chart for Kubernetes
 | service.type | string | `"ClusterIP"` |  |
 | serviceAccount.annotations | object | `{}` |  |
 | serviceAccount.create | bool | `true` |  |
-| serviceAccount.name | string | `""` |  |
+| serviceAccount.name | string | `""` |  If not set and create is true, a name is generated using the fullname template |
 | tolerations | list | `[]` |  |
