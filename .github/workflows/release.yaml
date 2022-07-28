@@ -12,7 +12,8 @@ permissions:
 jobs:
   release:
     permissions:
-      contents: write
+      contents: write # push chart to ghcr.io
+
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
@@ -30,7 +31,7 @@ jobs:
         with:
           version: v3.9.0
 
-      # Publish OCI charts to ghcr.io
+      # publish OCI charts to ghcr.io
       - name: Generate charts
         run: |
           mkdir -p .cr-release-packages
@@ -54,7 +55,8 @@ jobs:
             fi
             helm push "${pkg}" oci://ghcr.io/tuananh/chart-repo-template
           done
-          
+      
+      # publish charts to gh-pages branch
       - name: Run chart-releaser
         uses: helm/chart-releaser-action@v1.4.0
         env:
