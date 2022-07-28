@@ -28,7 +28,7 @@ jobs:
         with:
           version: v3.9.0
 
-      # publish OCI charts to ghcr.io
+      # Publish OCI charts to ghcr.io
       - name: Generate charts
         run: |
           mkdir -p .cr-release-packages
@@ -43,7 +43,7 @@ jobs:
           username: ${{ github.actor }}
           password: ${{ secrets.GITHUB_TOKEN }}
 
-      - name: Push Charts to GHCR
+      - name: Publish Charts to GHCR
         run: |
           for pkg in .cr-release-packages/*; do
             echo ${pkg}
@@ -53,8 +53,10 @@ jobs:
             helm push "${pkg}" oci://ghcr.io/tuananh/chart-repo-template
           done
       
-      # publish charts to gh-pages branch
-      - name: Push charts to GitHub Pages
+      # Publish charts to gh-pages branch
+      - name: Publish charts to GitHub Pages
         uses: helm/chart-releaser-action@v1.4.0
+        with:
+          config: .github/configs/cr.yaml
         env:
           CR_TOKEN: "${{ secrets.GITHUB_TOKEN }}"
