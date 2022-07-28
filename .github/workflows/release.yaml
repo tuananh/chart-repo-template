@@ -5,14 +5,11 @@ on:
     branches:
       - main
 
-permissions:
-  contents: write
-  packages: write
-
 jobs:
   release:
     permissions:
       contents: write # push chart to ghcr.io
+      packages: write
 
     runs-on: ubuntu-latest
     steps:
