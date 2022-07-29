@@ -1,1 +1,2 @@
-index-path: "./index.yaml" 
+index-path: "./index.yaml"
+skip-existing: "true"
