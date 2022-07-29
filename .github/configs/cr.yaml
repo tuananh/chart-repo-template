@@ -1,2 +1,1 @@
-owner: tuananh
-git-base-url: https://tuananh.github.io/chart-repo-template/
+index-path: "./index.yaml" 
