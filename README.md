@@ -11,7 +11,8 @@ A chart repo template
 Using ghcr.io
 
 ```shell
-# login to registry and then
+# create a token, login to ghcr.io with
+helm registry login ghcr.io
 helm pull oci://ghcr.io/tuananh/chart-repo-template/example-chart --version 0.1.0
 ```
 
