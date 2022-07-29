@@ -8,9 +8,18 @@ A chart repo template
 
 ## Usage
 
+Using ghcr.io
+
 ```shell
 # login to registry and then
 helm pull oci://ghcr.io/tuananh/chart-repo-template/example-chart --version 0.1.0
+```
+
+Using legacy registry
+
+```shell
+helm repo add chart-repo-template https://tuananh.github.io/chart-repo-template/
+helm pull chart-repo-template/example-chart
 ```
 
 ## License
