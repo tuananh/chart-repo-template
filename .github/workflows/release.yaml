@@ -73,7 +73,7 @@ jobs:
           
       # Publish charts to gh-pages branch
       - name: Publish charts to GitHub Pages
-        uses: helm/chart-releaser-action@v1.4.0
+        uses: helm/chart-releaser-action@v1.4.1
         with:
           config: .github/configs/cr.yaml
         env:
