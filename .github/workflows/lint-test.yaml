@@ -40,7 +40,7 @@ jobs:
       # we will build and use this PR in the meantime
       # ref: https://github.com/helm/chart-testing/pull/445
 
-      - uses: actions/setup-go@v3
+      - uses: actions/setup-go@v4
         with:
           go-version: '>=1.17.0'
       - name: install custom chart-testing (ct CLI)
