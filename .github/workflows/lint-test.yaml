@@ -72,7 +72,7 @@ jobs:
       # TODO: (tuananh): wait til the PR lands and we can re-enable it.
 
       - name: Create kind cluster
-        uses: helm/kind-action@v1.5.0
+        uses: helm/kind-action@v1.7.0
         if: steps.list-changed.outputs.changed == 'true'
         with:
           config: .github/configs/kind-config.yaml
